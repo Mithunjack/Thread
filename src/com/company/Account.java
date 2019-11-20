@@ -1,5 +1,10 @@
 package com.company;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class Account {
     public int id;
     private int balance;
@@ -71,10 +76,31 @@ public class Account {
 
     public static boolean collectedTransfer(Account destination,Account a1,int amount1,Account a2,int amount2){
         int collectedMoney=0;
-        if(destination.id<a1.id){
-            synchronized (destination){
-                synchronized (a1){
-                    synchronized (a2){
+
+        Account[] array = new Account[3];
+        array[0] = a1;
+        array[1] = a2;
+        array[2] = destination;
+
+
+        Arrays.sort(array, new Comparator<Account>() {
+            @Override
+            public int compare(Account t, Account t1) {
+                if (t.id>t1.id){
+                    return 1;
+                }
+                else if (t.id<t1.id){
+                    return -1;
+                }
+                else {
+                    return 0;
+                }
+            }
+        });
+
+         synchronized (array[0]){
+                synchronized (array[1]){
+                    synchronized (array[2]){
                         if (a1.withdraw(amount1)){
                             collectedMoney = collectedMoney + amount1;
                         }else {
@@ -88,48 +114,8 @@ public class Account {
                         destination.deposit(collectedMoney);
                     }
                 }
-            }
-        }
-        else {
-            if(a1.id < a2.id){
+         }
 
-                synchronized (a1){
-                    synchronized (destination){
-                        synchronized (a2){
-                            if (a1.withdraw(amount1)){
-                                collectedMoney = collectedMoney + amount1;
-                            }else {
-                                System.out.println("do not have enough balance to transfer");
-                            }
-                            if (a2.withdraw(amount2)){
-                                collectedMoney = collectedMoney + amount2;
-                            }else {
-                                System.out.println("do not have enough balance to transfer");
-                            }
-                            destination.deposit(collectedMoney);
-                        }
-                    }
-                }
-            }else{
-                synchronized (a2){
-                    synchronized (destination){
-                        synchronized (a1){
-                            if (a1.withdraw(amount1)){
-                                collectedMoney = collectedMoney + amount1;
-                            }else {
-                                System.out.println("do not have enough balance to transfer");
-                            }
-                            if (a2.withdraw(amount2)){
-                                collectedMoney = collectedMoney + amount2;
-                            }else {
-                                System.out.println("do not have enough balance to transfer");
-                            }
-                            destination.deposit(collectedMoney);
-                        }
-                    }
-                }
-            }
-        }
         return true;
     }
 }

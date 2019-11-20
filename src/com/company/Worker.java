@@ -15,8 +15,8 @@ public class Worker extends Thread{
 
     public void run(){
           while (true){
-            //myAccount.transferWithDeadlock(Destination,transferBal);
-            //System.out.println("Account ID: "+myAccount.id+ " "+myAccount.getBalance());
+            //a1.transfer(a2,transferBal);
+            //System.out.println("Account ID: "+a1.id+ " "+a1.getBalance());
             Account.collectedTransfer(a3,a1,10,a2,15);
             System.out.println(a3.getBalance());
         }
