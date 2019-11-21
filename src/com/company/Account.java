@@ -74,12 +74,12 @@ public class Account {
 
     }
 
-    public static boolean collectedTransfer(Account destination,Account a1,int amount1,Account a2,int amount2){
+    public static boolean collectedTransfer(Account destination,Account s1,int amount1,Account s2,int amount2){
         int collectedMoney=0;
 
         Account[] array = new Account[3];
-        array[0] = a1;
-        array[1] = a2;
+        array[0] = s1;
+        array[1] = s2;
         array[2] = destination;
 
 
@@ -101,12 +101,12 @@ public class Account {
          synchronized (array[0]){
                 synchronized (array[1]){
                     synchronized (array[2]){
-                        if (a1.withdraw(amount1)){
+                        if (s1.withdraw(amount1)){
                             collectedMoney = collectedMoney + amount1;
                         }else {
                             System.out.println("do not have enough balance to transfer");
                         }
-                        if (a2.withdraw(amount2)){
+                        if (s2.withdraw(amount2)){
                             collectedMoney = collectedMoney + amount2;
                         }else {
                             System.out.println("do not have enough balance to transfer");
